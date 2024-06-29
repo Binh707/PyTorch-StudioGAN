@@ -22,6 +22,8 @@ import torch.distributed as dist
 import wandb
 
 from data_util import Dataset_
+from extend_data_util import Astech_PN_Dataset
+
 from utils.style_ops import grid_sample_gradfix
 from utils.style_ops import conv2d_gradfix
 from metrics.inception_net import InceptionV3
