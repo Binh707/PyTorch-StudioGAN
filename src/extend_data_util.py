@@ -256,4 +256,7 @@ class Astech_PN_Dataset(Dataset):
         return self.trsf(stack_11_img), int(class_id)
 
     def __len__(self):
-        return 100
+        if self.train == True:
+            return 100
+        else:
+            return 40
