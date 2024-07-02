@@ -123,26 +123,19 @@ def load_worker(local_rank, cfgs, gpus_per_node, run_name, hdf5_path):
     # -----------------------------------------------------------------------------
     if load_train_dataset:
         if local_rank == 0:
-            # logger.info("Load {name} train dataset for training.".format(name=cfgs.DATA.name))
-            logger.info("Load train dataset from {data_dir} for training.".format(data_dir=cfgs.RUN.data_dir))
-        # train_dataset = Dataset_(data_name=cfgs.DATA.name,
-        #                          data_dir=cfgs.RUN.data_dir,
-        #                          train=True,
-        #                          crop_long_edge=cfgs.PRE.crop_long_edge,
-        #                          resize_size=cfgs.PRE.resize_size,
-        #                          resizer=None if hdf5_path is not None else cfgs.RUN.pre_resizer,
-        #                          random_flip=cfgs.PRE.apply_rflip,
-        #                          normalize=True,
-        #                          hdf5_path=hdf5_path,
-        #                          load_data_in_memory=cfgs.RUN.load_data_in_memory)
+            logger.info("Load {name} train dataset for training.".format(name=cfgs.DATA.name))
+        train_dataset = Dataset_(data_name=cfgs.DATA.name,
+                                 data_dir=cfgs.RUN.data_dir,
+                                 train=True,
+                                 crop_long_edge=cfgs.PRE.crop_long_edge,
+                                 resize_size=cfgs.PRE.resize_size,
+                                 resizer=None if hdf5_path is not None else cfgs.RUN.pre_resizer,
+                                 random_flip=cfgs.PRE.apply_rflip,
+                                 normalize=True,
+                                 hdf5_path=hdf5_path,
+                                 load_data_in_memory=cfgs.RUN.load_data_in_memory)
 
-        train_dataset = Astech_PN_Dataset(data_dir=cfgs.RUN.data_dir, 
-                                            train=True,
-                                            crop_long_edge=cfgs.PRE.crop_long_edge,
-                                            resize_size=cfgs.PRE.resize_size,
-                                            resizer=None if hdf5_path is not None else cfgs.RUN.pre_resizer,
-                                            random_flip=cfgs.PRE.apply_rflip,
-                                            normalize=True)
+
 
         if local_rank == 0:
             logger.info("Train dataset size: {dataset_size}".format(dataset_size=len(train_dataset)))
@@ -150,25 +143,19 @@ def load_worker(local_rank, cfgs, gpus_per_node, run_name, hdf5_path):
         train_dataset = None
 
     if  load_eval_dataset:
-        # if local_rank == 0:
-        #     logger.info("Load {name} {ref} dataset for evaluation.".format(name=cfgs.DATA.name, ref=cfgs.RUN.ref_dataset))
-        # eval_dataset = Dataset_(data_name=cfgs.DATA.name,
-        #                         data_dir=cfgs.RUN.data_dir,
-        #                         train=True if cfgs.RUN.ref_dataset == "train" else False,
-        #                         crop_long_edge=False if cfgs.DATA.name in cfgs.MISC.no_proc_data else True,
-        #                         resize_size=None if cfgs.DATA.name in cfgs.MISC.no_proc_data else cfgs.DATA.img_size,
-        #                         resizer=cfgs.RUN.pre_resizer,
-        #                         random_flip=False,
-        #                         hdf5_path=None,
-        #                         normalize=True,
-        #                         load_data_in_memory=False)
-        eval_dataset = Astech_PN_Dataset(data_dir=cfgs.RUN.data_dir,
-                                            train=False,
-                                            crop_long_edge=cfgs.PRE.crop_long_edge,
-                                            resize_size=cfgs.PRE.resize_size,
-                                            resizer=None if hdf5_path is not None else cfgs.RUN.pre_resizer,
-                                            random_flip=cfgs.PRE.apply_rflip,
-                                            normalize=True)
+        if local_rank == 0:
+            logger.info("Load {name} {ref} dataset for evaluation.".format(name=cfgs.DATA.name, ref=cfgs.RUN.ref_dataset))
+        eval_dataset = Dataset_(data_name=cfgs.DATA.name,
+                                data_dir=cfgs.RUN.data_dir,
+                                train=True if cfgs.RUN.ref_dataset == "train" else False,
+                                crop_long_edge=False if cfgs.DATA.name in cfgs.MISC.no_proc_data else True,
+                                resize_size=None if cfgs.DATA.name in cfgs.MISC.no_proc_data else cfgs.DATA.img_size,
+                                resizer=cfgs.RUN.pre_resizer,
+                                random_flip=False,
+                                hdf5_path=None,
+                                normalize=True,
+                                load_data_in_memory=False)
+       
 
         if local_rank == 0: 
             logger.info("Eval dataset size: {dataset_size}".format(dataset_size=len(eval_dataset)))

@@ -1,5 +1,3 @@
-# data_util.py
-
 import os
 import random
 
