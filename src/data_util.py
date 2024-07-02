@@ -94,6 +94,12 @@ class Dataset_(Dataset):
         self.load_data_in_memory = load_data_in_memory
         self.trsf_list = []
 
+        if hdf5_path is not None:
+            dev_path = self.hdf5_path.replace('train', 'dev')
+            if os.path.exists(dev_path) == False and self.train == False:
+                self.train == True
+
+
         if "ASTECH" in self.data_name:
             self.trsf_list += [transforms.ToTensor()]
 
@@ -137,7 +143,12 @@ class Dataset_(Dataset):
 
     def load_dataset(self):
         if self.hdf5_path is not None:
-            with h5.File(self.hdf5_path, "r") as f:
+            if self.train = False:
+                hdf5_set_path = self.hdf5_path.replace('train', 'dev')
+            else:
+                hdf5_set_path = self.hdf5_path
+
+            with h5.File(hdf5_set_path, "r") as f:
                 data, labels = f["imgs"], f["labels"]
                 self.num_dataset = data.shape[0]
                 if self.load_data_in_memory:
