@@ -47,7 +47,7 @@ class Configurations(object):
         # number of classes in training dataset, if there is no explicit class label, DATA.num_classes = 1
         self.DATA.num_classes = 10
         # number of image channels in dataset. //image_shape[0]
-        self.DATA.img_channels = 11
+        self.DATA.img_channels = 4
 
         # -----------------------------------------------------------------------------
         # Model settings

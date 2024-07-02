@@ -43,7 +43,7 @@ class RandomCropLongEdge(object):
         return self.__class__.__name__
 
 
-class CenterCropLongEdge(object):
+class CenterCropImageLongEdge(object):
     """
     this code is borrowed from https://github.com/ajbrock/BigGAN-PyTorch
     MIT License
@@ -54,6 +54,20 @@ class CenterCropLongEdge(object):
 
     def __repr__(self):
         return self.__class__.__name__
+
+
+class CenterCropTensorLongEdge(object):
+    """
+    this code is borrowed from https://github.com/ajbrock/BigGAN-PyTorch
+    MIT License
+    Copyright (c) 2019 Andy Brock
+    """
+    def __call__(self, img):
+        return transforms.functional.center_crop(img, min(img[0].shape))
+
+    def __repr__(self):
+        return self.__class__.__name__
+
 
 
 class Dataset_(Dataset):
@@ -67,6 +81,7 @@ class Dataset_(Dataset):
                  random_flip=False,
                  normalize=True,
                  hdf5_path=None,
+                 img_channels = 3,
                  load_data_in_memory=False):
         super(Dataset_, self).__init__()
         self.data_name = data_name
@@ -75,29 +90,50 @@ class Dataset_(Dataset):
         self.random_flip = random_flip
         self.normalize = normalize
         self.hdf5_path = hdf5_path
+        self.img_channels = img_channels
         self.load_data_in_memory = load_data_in_memory
         self.trsf_list = []
 
-        if self.hdf5_path is None:
-            if crop_long_edge:
-                self.trsf_list += [CenterCropLongEdge()]
-            if resize_size is not None and resizer != "wo_resize":
-                self.trsf_list += [transforms.Resize(resize_size, interpolation=resizer_collection[resizer])]
-        else:
-            self.trsf_list += [transforms.ToPILImage()]
-
-        if self.random_flip:
-            self.trsf_list += [transforms.RandomHorizontalFlip()]
-
-        if self.normalize:
+        if "ASTECH" in self.data_name:
             self.trsf_list += [transforms.ToTensor()]
-            self.trsf_list += [transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])]
+
+            if crop_long_edge:
+                    self.trsf_list += [CenterCropTensorLongEdge()]
+
+            if resize_size is not None and resizer != "wo_resize":
+                    self.trsf_list += [transforms.Resize(resize_size, interpolation=resizer_collection[resizer])]
+
+            if self.random_flip:
+                self.trsf_list += [transforms.RandomHorizontalFlip()]
+
+            if self.normalize:
+                self.trsf_list += [transforms.Normalize([0.5] * self.img_channels, [0.5] * self.img_channels)]
+
+            self.trsf = transforms.Compose(self.trsf_list)
+            self.load_dataset()
+
+
         else:
-            self.trsf_list += [transforms.PILToTensor()]
+            if self.hdf5_path is None:
+                if crop_long_edge:
+                    self.trsf_list += [CenterCropImageLongEdge()]
+                if resize_size is not None and resizer != "wo_resize":
+                    self.trsf_list += [transforms.Resize(resize_size, interpolation=resizer_collection[resizer])]
+            else:
+                self.trsf_list += [transforms.ToPILImage()]
 
-        self.trsf = transforms.Compose(self.trsf_list)
+            if self.random_flip:
+                self.trsf_list += [transforms.RandomHorizontalFlip()]
 
-        self.load_dataset()
+            if self.normalize:
+                self.trsf_list += [transforms.ToTensor()]
+                self.trsf_list += [transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])]
+            else:
+                self.trsf_list += [transforms.PILToTensor()]
+
+            self.trsf = transforms.Compose(self.trsf_list)
+
+            self.load_dataset()
 
     def load_dataset(self):
         if self.hdf5_path is not None:

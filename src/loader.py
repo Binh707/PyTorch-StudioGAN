@@ -133,6 +133,7 @@ def load_worker(local_rank, cfgs, gpus_per_node, run_name, hdf5_path):
                                  random_flip=cfgs.PRE.apply_rflip,
                                  normalize=True,
                                  hdf5_path=hdf5_path,
+                                 img_channels = cfgs.DATA.img_channels,
                                  load_data_in_memory=cfgs.RUN.load_data_in_memory)
 
 
@@ -153,6 +154,7 @@ def load_worker(local_rank, cfgs, gpus_per_node, run_name, hdf5_path):
                                 resizer=cfgs.RUN.pre_resizer,
                                 random_flip=False,
                                 hdf5_path=None,
+                                img_channels = cfgs.DATA.img_channels,
                                 normalize=True,
                                 load_data_in_memory=False)
        
