@@ -143,7 +143,7 @@ def load_configs_initialize_training():
     cfgs.RUN.pre_resizer = "wo_resize" if cfgs.DATA.name in cfgs.MISC.no_proc_data else cfgs.RUN.pre_resizer
     if cfgs.RUN.load_train_hdf5:
         if 'ASTECH' in cfgs.DATA.name:
-            hdf5_path = cfgs.RUN.data_dir + 'astech_pn_train.hdf5'
+            hdf5_path = cfgs.RUN.data_dir + cfgs.DATA.name.lower() + '_train.hdf5'
             crop_long_edge = False
             resize_size = None
         else:
