@@ -151,6 +151,8 @@ def load_configs_initialize_training():
                                             data_dir=cfgs.RUN.data_dir,
                                             DATA=cfgs.DATA,
                                             RUN=cfgs.RUN)
+        if 'ASTECH' in cfgs.DATA.name:
+            hdf5_path = cfgs.RUN.data_dir
     else:
         hdf5_path = None
     cfgs.PRE.crop_long_edge, cfgs.PRE.resize_size = crop_long_edge, resize_size
