@@ -122,6 +122,9 @@ def load_worker(local_rank, cfgs, gpus_per_node, run_name, hdf5_path):
     # load train and evaluation datasets.
     # -----------------------------------------------------------------------------
     if load_train_dataset:
+        # print('PNPNPNPNPNPN')
+        # print(hdf5_path)
+        # print('PNPNPNPNPNPN')
         if local_rank == 0:
             logger.info("Load {name} train dataset for training.".format(name=cfgs.DATA.name))
         train_dataset = Dataset_(data_name=cfgs.DATA.name,
@@ -153,7 +156,7 @@ def load_worker(local_rank, cfgs, gpus_per_node, run_name, hdf5_path):
                                 resize_size=None if cfgs.DATA.name in cfgs.MISC.no_proc_data else cfgs.DATA.img_size,
                                 resizer=cfgs.RUN.pre_resizer,
                                 random_flip=False,
-                                hdf5_path=None,
+                                hdf5_path=hdf5_path,
                                 img_channels = cfgs.DATA.img_channels,
                                 normalize=True,
                                 load_data_in_memory=False)

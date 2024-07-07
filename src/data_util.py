@@ -96,7 +96,7 @@ class Dataset_(Dataset):
 
         if hdf5_path is not None:
             dev_path = self.hdf5_path.replace('train', 'dev')
-            if os.path.exists(dev_path) == False and self.train == False:
+            if os.path.exists(dev_path) == False:
                 self.train == True
 
 
@@ -143,6 +143,7 @@ class Dataset_(Dataset):
 
     def load_dataset(self):
         if self.hdf5_path is not None:
+            # print('HBHBHBHBHBHBHBHBHB')
             if self.train == False:
                 hdf5_set_path = self.hdf5_path.replace('train', 'dev')
             else:
