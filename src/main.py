@@ -142,17 +142,22 @@ def load_configs_initialize_training():
     resize_size = None if cfgs.DATA.name in cfgs.MISC.no_proc_data else cfgs.DATA.img_size
     cfgs.RUN.pre_resizer = "wo_resize" if cfgs.DATA.name in cfgs.MISC.no_proc_data else cfgs.RUN.pre_resizer
     if cfgs.RUN.load_train_hdf5:
-        hdf5_path, crop_long_edge, resize_size = hdf5.make_hdf5(
-                                            name=cfgs.DATA.name,
-                                            img_size=cfgs.DATA.img_size,
-                                            crop_long_edge=crop_long_edge,
-                                            resize_size=resize_size,
-                                            resizer=cfgs.RUN.pre_resizer,
-                                            data_dir=cfgs.RUN.data_dir,
-                                            DATA=cfgs.DATA,
-                                            RUN=cfgs.RUN)
         if 'ASTECH' in cfgs.DATA.name:
-            hdf5_path = cfgs.RUN.data_dir
+            hdf5_path = cfgs.RUN.data_dir + 'astech_pn_train.hdf5'
+            crop_long_edge = False
+            resize_size = None
+        else:
+            hdf5_path, crop_long_edge, resize_size = hdf5.make_hdf5(
+                                                      name=cfgs.DATA.name,
+                                                      img_size=cfgs.DATA.img_size,
+                                                      crop_long_edge=crop_long_edge,
+                                                      resize_size=resize_size,
+                                                      resizer=cfgs.RUN.pre_resizer,
+                                                      data_dir=cfgs.RUN.data_dir,
+                                                      DATA=cfgs.DATA,
+                                                      RUN=cfgs.RUN)
+        if 'ASTECH' in cfgs.DATA.name:
+            hdf5_path = cfgs.RUN.data_dir + 'astech_pn_train.hdf5'
     else:
         hdf5_path = None
     cfgs.PRE.crop_long_edge, cfgs.PRE.resize_size = crop_long_edge, resize_size
