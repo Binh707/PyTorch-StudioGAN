@@ -143,7 +143,7 @@ class Dataset_(Dataset):
 
     def load_dataset(self):
         if self.hdf5_path is not None:
-            if self.train = False:
+            if self.train == False:
                 hdf5_set_path = self.hdf5_path.replace('train', 'dev')
             else:
                 hdf5_set_path = self.hdf5_path
