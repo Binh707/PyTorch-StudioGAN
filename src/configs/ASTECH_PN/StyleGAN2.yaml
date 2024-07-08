@@ -1,7 +1,7 @@
 DATA:
   name: "ASTECH_PN"
   img_size: 32
-  num_classes: 4
+  num_classes: 1
   img_channels: 11
 MODEL:
   backbone: "stylegan2"

@@ -1,7 +1,8 @@
 DATA:
-  name: "CIFAR10"
+  name: "ASTECH_PN"
   img_size: 32
-  num_classes: 10
+  num_classes: 1
+  img_channels: 11
 MODEL:
   backbone: "stylegan2"
   g_cond_mtd: "cAdaIN"
