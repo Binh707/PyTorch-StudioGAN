@@ -424,7 +424,13 @@ def plot_img_canvas(images, save_path, num_cols, logger, logging=True):
     if not exists(directory):
         os.makedirs(directory)
 
-    save_image(((images + 1)/2).clamp(0.0, 1.0), save_path, padding=0, nrow=num_cols)
+    batch_size = images.shape[0]
+    channels = images.shape[1]
+    height = images.shape[2]
+    width = images.shape[3]
+    slice_images = images.view(batch_size * channels, 1, height, width)
+
+    save_image(((slice_images + 1)/2).clamp(0.0, 1.0), save_path, padding=0, nrow=num_cols)
     if logging:
         logger.info("Save image canvas to {}".format(save_path))
 
